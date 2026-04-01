@@ -94,42 +94,17 @@ Notes: {data['expectations']}
         print("Email failed:", e)
 # API
 @app.route("/api/booking", methods=["POST"])
-def create_booking():
-    data = request.get_json()
+def booking():
+    data = request.json
+    print(data)
 
-    if not data:
-        return jsonify({"success": False, "error": "No data received"}), 400
+    # Optional: save booking data for your own records
+    # save_booking(data)
 
-    ip = request.remote_addr
-    now = time()
-    if ip in request_log and now - request_log[ip] < 10:
-        return jsonify({"success": False, "error": "Too many requests"}), 429
-    request_log[ip] = now
+    # Email sending is disabled per request
+    # send_email(data)
 
-    required = ["client_name", "client_email", "client_phone", "service_type", "meetup_date", "meetup_time", "meetup_location", "expectations"]
-    for field in required:
-        if not data.get(field):
-            return jsonify({"success": False, "error": f"Missing {field}"}), 400
-
-    if not is_valid_email(data["client_email"]):
-        return jsonify({"success": False, "error": "Invalid email"}), 400
-
-    if not is_valid_phone(data["client_phone"]):
-        return jsonify({"success": False, "error": "Invalid phone"}), 400
-
-    try:
-        booking_date = datetime.strptime(data["meetup_date"], "%Y-%m-%d")
-        if booking_date.date() < datetime.now().date():
-            return jsonify({"success": False, "error": "Date cannot be in past"}), 400
-    except Exception:
-        return jsonify({"success": False, "error": "Invalid date format"}), 400
-
-    data["submitted_at"] = datetime.now().strftime("%d %b %Y, %I:%M %p")
-
-    save_booking(data)
-    send_email(data)
-
-    return jsonify({"success": True})
+    return {"status": "success"}
 
 @app.route("/api/contact", methods=["POST"])
 def contact():
