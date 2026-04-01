@@ -91,7 +91,9 @@ def booking():
         data = request.get_json()
 
         if not data:
-            return jsonify({"status": "error", "message": "No data"}), 400
+            return jsonify({"error": "No data received"}), 400
+
+        print("DATA:", data)
 
         if EMAIL and PASSWORD and RECEIVER_EMAIL:
             booking_body = f"""
@@ -104,13 +106,13 @@ Time: {data.get('meetup_time')}
 Location: {data.get('meetup_location')}
 Notes: {data.get('expectations')}
 """
-            send_email(RECEIVER_EMAIL, "New Booking", booking_body)
+            send_email(RECEIVER_EMAIL, f"New Booking - {data.get('client_name')}", booking_body)
 
         return jsonify({"status": "success"})
 
     except Exception as e:
         print("BOOKING ERROR:", e)
-        return jsonify({"status": "error", "message": str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/api/contact", methods=["POST"])
 def contact():
