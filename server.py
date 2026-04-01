@@ -7,7 +7,6 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os, json, re, smtplib
 from datetime import datetime
-from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from time import time
 
@@ -15,10 +14,16 @@ request_log = {}
 
 load_dotenv()
 
-GMAIL_ADDRESS = os.getenv("GMAIL_ADDRESS")
-GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")
+EMAIL = os.getenv("SENDER_EMAIL")
+PASSWORD = os.getenv("EMAIL_PASSWORD")
 RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 ADMIN_KEY = os.getenv("ADMIN_KEY")
+
+# Local fallback values (development only; do not commit with real credentials)
+if not EMAIL:
+    EMAIL = "midnightgents175@gmail.com"
+if not PASSWORD:
+    PASSWORD = "yjlabsuigwendaf"
 
 BOOKINGS_FILE = "bookings.json"
 
@@ -62,36 +67,17 @@ def save_booking(data):
     os.replace(temp_file, BOOKINGS_FILE)
 
 # EMAIL
-def send_email(data):
-    if not GMAIL_ADDRESS:
-        return
 
-    try:
-        msg = MIMEMultipart()
-        msg["From"] = GMAIL_ADDRESS
-        msg["To"] = RECEIVER_EMAIL
-        msg["Subject"] = f"New Booking - {data['client_name']}"
+def send_email(to_email, subject, body):
+    msg = MIMEText(body)
+    msg["Subject"] = subject
+    msg["From"] = EMAIL
+    msg["To"] = to_email
 
-        body = f"""
-Name: {data['client_name']}
-Email: {data['client_email']}
-Phone: {data['client_phone']}
-Service: {data['service_type']}
-Date: {data['meetup_date']}
-Time: {data['meetup_time']}
-Location: {data['meetup_location']}
-Notes: {data['expectations']}
-"""
-        msg.attach(MIMEText(body, "plain"))
-
-        server = smtplib.SMTP("smtp.gmail.com", 587)
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
         server.starttls()
-        server.login(GMAIL_ADDRESS, GMAIL_APP_PASSWORD)
+        server.login(EMAIL, PASSWORD)
         server.send_message(msg)
-        server.quit()
-
-    except Exception as e:
-        print("Email failed:", e)
 # API
 @app.route("/api/booking", methods=["POST"])
 def booking():
@@ -101,8 +87,19 @@ def booking():
     # Optional: save booking data for your own records
     # save_booking(data)
 
-    # Email sending is disabled per request
-    # send_email(data)
+    # Send booking notification
+    if EMAIL and PASSWORD and RECEIVER_EMAIL:
+        booking_body = f"""
+Name: {data.get('client_name')}
+Email: {data.get('client_email')}
+Phone: {data.get('client_phone')}
+Service: {data.get('service_type')}
+Date: {data.get('meetup_date')}
+Time: {data.get('meetup_time')}
+Location: {data.get('meetup_location')}
+Notes: {data.get('expectations')}
+"""
+        send_email(RECEIVER_EMAIL, f"New Booking - {data.get('client_name')}", booking_body)
 
     return {"status": "success"}
 
@@ -119,18 +116,9 @@ def contact():
 
     # Send email
     try:
-        if GMAIL_ADDRESS:
-            msg = MIMEMultipart()
-            msg["From"] = GMAIL_ADDRESS
-            msg["To"] = RECEIVER_EMAIL
-            msg["Subject"] = f"City Buddy Contact: {data['subject']}"
+        if EMAIL and PASSWORD and RECEIVER_EMAIL:
             body = f"From: {data['sender_name']}\nEmail: {data['sender_email']}\nSubject: {data['subject']}\n\n{data['message']}"
-            msg.attach(MIMEText(body, "plain"))
-            server = smtplib.SMTP("smtp.gmail.com", 587)
-            server.starttls()
-            server.login(GMAIL_ADDRESS, GMAIL_APP_PASSWORD)
-            server.send_message(msg)
-            server.quit()
+            send_email(RECEIVER_EMAIL, f"City Buddy Contact: {data['subject']}", body)
     except Exception as e:
         print(f"Email error: {e}")
 
