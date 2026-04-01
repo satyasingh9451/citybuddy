@@ -81,15 +81,14 @@ def send_email(to_email, subject, body):
 # API
 @app.route("/api/booking", methods=["POST"])
 def booking():
-    data = request.json
-    print(data)
+    try:
+        data = request.get_json()
 
-    # Optional: save booking data for your own records
-    # save_booking(data)
+        if not data:
+            return jsonify({"status": "error", "message": "No data"}), 400
 
-    # Send booking notification
-    if EMAIL and PASSWORD and RECEIVER_EMAIL:
-        booking_body = f"""
+        if EMAIL and PASSWORD and RECEIVER_EMAIL:
+            booking_body = f"""
 Name: {data.get('client_name')}
 Email: {data.get('client_email')}
 Phone: {data.get('client_phone')}
@@ -99,9 +98,13 @@ Time: {data.get('meetup_time')}
 Location: {data.get('meetup_location')}
 Notes: {data.get('expectations')}
 """
-        send_email(RECEIVER_EMAIL, f"New Booking - {data.get('client_name')}", booking_body)
+            send_email(RECEIVER_EMAIL, f"New Booking - {data.get('client_name')}", booking_body)
 
-    return {"status": "success"}
+        return jsonify({"status": "success"})
+
+    except Exception as e:
+        print("ERROR:", e)
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route("/api/contact", methods=["POST"])
 def contact():
@@ -139,5 +142,6 @@ def get_bookings():
 
 # RUN
 if __name__ == "__main__":
-    app.run(debug=False)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
 
