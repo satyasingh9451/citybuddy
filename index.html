@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>City Buddy – Rent a Friend | Safe Companionship</title>
+  <meta name="description" content="Safe, verified companionship for movies, cafes, and city hangouts. Find your City Buddy today."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ── FLOATING WHATSAPP ── -->
+  <a href="https://wa.me/919999999999?text=Hi%20City%20Buddy!" target="_blank" class="wa-float">
+    💬
+    <span class="wa-float-tooltip">Chat with us!</span>
+  </a>
+
+  <!-- ── BACK TO TOP ── -->
+  <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <!-- ── COOKIE BANNER ── -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p>🍪 We use cookies to improve your experience. By using City Buddy, you agree to our <a href="#" onclick="showPage('safety')">Privacy Policy</a>.</p>
+    <button class="cookie-accept" onclick="acceptCookies()">Got it!</button>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo" onclick="showPage('home')">
+        <img src="cblogo.png" alt="City Buddy" class="nav-logo-img"/>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" data-page="home"    onclick="showPage('home')"    class="nav-link active">Home</a></li>
+        <li><a href="#" data-page="about"   onclick="showPage('about')"   class="nav-link">About</a></li>
+        <li><a href="#" data-page="safety"  onclick="showPage('safety')"  class="nav-link">Safety</a></li>
+        <li><a href="#" data-page="contact" onclick="showPage('contact')" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <button class="btn-ghost" onclick="showPage('about')">How it works</button>
+        <button class="btn-nav-cta" onclick="showPage('booking')">
+          <span>Book a Buddy</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-inner">
+      <img src="cblogo.png" alt="City Buddy" class="drawer-logo"/>
+      <a href="#" onclick="showPage('home');closeMenu()"    class="drawer-link">🏠 Home</a>
+      <a href="#" onclick="showPage('about');closeMenu()"   class="drawer-link">ℹ️ About</a>
+      <a href="#" onclick="showPage('safety');closeMenu()"  class="drawer-link">🛡️ Safety &amp; Legal</a>
+      <a href="#" onclick="showPage('contact');closeMenu()" class="drawer-link">✉️ Contact</a>
+      <a href="#" onclick="showPage('booking');closeMenu()" class="drawer-cta">⭐ Book a Buddy →</a>
+    </div>
+  </div>
+
+  <!-- ===== HOME PAGE ===== -->
+  <div id="page-home" class="page active">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-mesh">
+        <div class="mesh-orb mesh-orb-1"></div>
+        <div class="mesh-orb mesh-orb-2"></div>
+        <div class="mesh-orb mesh-orb-3"></div>
+      </div>
+      <div class="hero-grid-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-dot"></span>
+          Verified Companionship · India's First
+        </div>
+        <h1 class="hero-title">
+          Book a <em class="italic-word">Safe Companion</em><br/>
+          for Movies, Cafes<br/>
+          <span class="title-highlight">& City Hangouts</span>
+        </h1>
+        <p class="hero-sub">
+          Safe, verified companionship for movies, cafes &amp; city hangouts.<br/>
+          Real people. Real moments. Zero pressure.
+        </p>
+        <div class="hero-cta-row">
+          <button class="btn-primary-hero" onclick="showPage('booking')">
+            Book a Buddy
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="btn-ghost-hero" onclick="showPage('about')">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/><path d="M6 8l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            See how it works
+          </button>
+        </div>
+        <div class="trust-strip">
+          <div class="trust-pill">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L7.5 4.5H11L8.5 6.5L9.5 10L6 8L2.5 10L3.5 6.5L1 4.5H4.5L6 1Z" fill="#C8913A"/></svg>
+            Verified Users Only
+          </div>
+          <div class="trust-pill">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l3.5 1.5v3.5C9.5 8.5 8 10 6 11 4 10 2.5 8.5 2.5 6V2.5L6 1z" fill="#4A7C59"/></svg>
+            100% Public Meetups
+          </div>
+          <div class="trust-pill">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#C8913A" stroke-width="1.3"/><path d="M4 6l1.5 1.5L8 4" stroke="#C8913A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Safety First Policy
+          </div>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="hero-panel-inner">
+          <div class="panel-live-row">
+            <span class="live-dot"></span>
+            <span class="live-text">Limited verified buddies available</span>
+          </div>
+          <div class="panel-cards">
+            <div class="panel-card pc-1">
+              <div class="pc-icon">🎬</div>
+              <div class="pc-body"><div class="pc-title">Movie Buddy</div><div class="pc-sub">₹299/hr · Cinema</div></div>
+              <div class="pc-badge">Available</div>
+            </div>
+            <div class="panel-card pc-2">
+              <div class="pc-icon">☕</div>
+              <div class="pc-body"><div class="pc-title">Cafe Companion</div><div class="pc-sub">₹249/hr · Cafe</div></div>
+              <div class="pc-badge">Popular</div>
+            </div>
+            <div class="panel-card pc-3">
+              <div class="pc-icon">🗺️</div>
+              <div class="pc-body"><div class="pc-title">City Explorer</div><div class="pc-sub">₹399/hr · Outdoor</div></div>
+              <div class="pc-badge">New</div>
+            </div>
+          </div>
+          <div class="panel-stats">
+            <div class="pstat">
+              <span class="pstat-num">500<span>+</span></span>
+              <span class="pstat-label">Happy Clients</span>
+            </div>
+            <div class="pstat-divider"></div>
+            <div class="pstat">
+              <span class="pstat-num">4.9<span>★</span></span>
+              <span class="pstat-label">Avg Rating</span>
+            </div>
+            <div class="pstat-divider"></div>
+            <div class="pstat">
+              <span class="pstat-num">0<span>%</span></span>
+              <span class="pstat-label">Incidents</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+     <!-- WHO IS THIS FOR -->
+<section class="section">
+  <div class="container" style="text-align:center">
+    <div class="section-tag">Who is this for?</div>
+    <h2 class="section-title">Built for Real <em>People</em></h2>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem">
+
+      <div class="svc-card-new">
+        <div class="svc-emoji-new">🌆</div>
+        <h3>New to City</h3>
+        <p>Explore your new city with someone by your side.</p>
+      </div>
+
+      <div class="svc-card-new">
+        <div class="svc-emoji-new">🧠</div>
+        <h3>Introverts</h3>
+        <p>No pressure. Just comfortable company.</p>
+      </div>
+
+      <div class="svc-card-new">
+        <div class="svc-emoji-new">💼</div>
+        <h3>Working Professionals</h3>
+        <p>Relax after work without being alone.</p>
+      </div>
+
+      <div class="svc-card-new">
+        <div class="svc-emoji-new">🎓</div>
+        <h3>Students</h3>
+        <p>Study, explore or hang out safely.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+    <!-- ── STATS COUNTER ── NEW -->
+    <div class="stats-section">
+      <div class="stats-inner">
+        <div class="stat-box reveal">
+          <div class="stat-icon">😊</div>
+          <div class="stat-num">500<span>+</span></div>
+          <div class="stat-label">Happy Clients</div>
+        </div>
+        <div class="stat-box reveal delay-1">
+          <div class="stat-icon">🌆</div>
+          <div class="stat-num">8<span>+</span></div>
+          <div class="stat-label">Cities Covered</div>
+        </div>
+        <div class="stat-box reveal delay-2">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-num">4.9<span>/5</span></div>
+          <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat-box reveal delay-3">
+          <div class="stat-icon">🛡️</div>
+          <div class="stat-num">100<span>%</span></div>
+          <div class="stat-label">Safe Meetups</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARQUEE -->
+    <div class="marquee-strip">
+      <div class="marquee-track">
+        <span>Safe Meetups</span><span class="marquee-dot">◆</span>
+        <span>Verified IDs</span><span class="marquee-dot">◆</span>
+        <span>Public Spaces Only</span><span class="marquee-dot">◆</span>
+        <span>No Pressure</span><span class="marquee-dot">◆</span>
+        <span>Real Connection</span><span class="marquee-dot">◆</span>
+        <span>City Explorers</span><span class="marquee-dot">◆</span>
+        <span>Movie Partners</span><span class="marquee-dot">◆</span>
+        <span>Cafe Companions</span><span class="marquee-dot">◆</span>
+        <span>Study Buddies</span><span class="marquee-dot">◆</span>
+        <span>Shopping Partners</span><span class="marquee-dot">◆</span>
+        <span>Safe Meetups</span><span class="marquee-dot">◆</span>
+        <span>Verified IDs</span><span class="marquee-dot">◆</span>
+        <span>Public Spaces Only</span><span class="marquee-dot">◆</span>
+        <span>No Pressure</span><span class="marquee-dot">◆</span>
+        <span>Real Connection</span><span class="marquee-dot">◆</span>
+        <span>City Explorers</span><span class="marquee-dot">◆</span>
+        <span>Movie Partners</span><span class="marquee-dot">◆</span>
+        <span>Cafe Companions</span><span class="marquee-dot">◆</span>
+        <span>Study Buddies</span><span class="marquee-dot">◆</span>
+        <span>Shopping Partners</span><span class="marquee-dot">◆</span>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <section class="section hiw-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-tag">Simple Process</div>
+          <h2 class="section-title">Three Steps to <em>Your Buddy</em></h2>
+          <p class="section-sub">No complex signups. No awkward DMs. Just a safe, structured process from start to meetup.</p>
+        </div>
+        <div class="hiw-grid">
+          <div class="hiw-card reveal delay-1">
+            <div class="hiw-number">01</div>
+            <div class="hiw-icon-wrap"><span>📋</span></div>
+            <h3>Submit Your Booking</h3>
+            <p>Fill our secure form with your preferences and upload ID verification — protecting you and your buddy both.</p>
+            <div class="hiw-line"></div>
+          </div>
+          <div class="hiw-card reveal delay-2">
+            <div class="hiw-number">02</div>
+            <div class="hiw-icon-wrap"><span>✅</span></div>
+            <h3>We Match & Verify</h3>
+            <p>Our team reviews your request, runs safety checks, and sends a confirmed buddy match to your inbox within 24h.</p>
+            <div class="hiw-line"></div>
+          </div>
+          <div class="hiw-card reveal delay-3">
+            <div class="hiw-number">03</div>
+            <div class="hiw-icon-wrap"><span>🌟</span></div>
+            <h3>Meet &amp; Enjoy</h3>
+            <p>Meet your City Buddy at the agreed public spot. Enjoy a genuine, pressure-free experience with zero strings attached.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES — 6 CARDS WITH PRICING -->
+    <section class="section services-section">
+      <div class="container">
+        <div class="section-header reveal" style="text-align:center">
+          <div class="section-tag">Our Services</div>
+          <h2 class="section-title">Every Kind of <em>Hangout, Covered</em></h2>
+          <p class="section-sub" style="margin:0 auto">Pick your experience. Every service includes a verified buddy, public meetup, and 24/7 support.</p>
+        </div>
+        <div class="svc-grid-new">
+          <div class="svc-card-new reveal delay-1">
+            <div class="svc-card-top">
+              <div class="svc-emoji-new">🎬</div>
+              <div class="svc-price-badge">₹299<span>/hr</span></div>
+            </div>
+            <h3>Movie Buddy</h3>
+            <p>Don't watch alone. Share reactions, grab popcorn, and discuss the plot — a relaxed, low-key cinema hangout.</p>
+            <div class="svc-meta-row">
+              <span class="svc-meta-pill">🕐 2–3 Hours</span>
+              <span class="svc-meta-pill">📍 Cinema / OTT Cafe</span>
+            </div>
+            <ul class="svc-includes">
+              <li>✓ Verified buddy match</li>
+              <li>✓ Public venue confirmed</li>
+              <li>✓ Post-movie walk optional</li>
+            </ul>
+            <button class="svc-book-btn" onclick="showPage('booking')">Book Now →</button>
+          </div>
+          <div class="svc-card-new reveal delay-2">
+            <div class="svc-card-top">
+              <div class="svc-emoji-new">☕</div>
+              <div class="svc-price-badge">₹249<span>/hr</span></div>
+            </div>
+            <h3>Cafe Companion</h3>
+            <p>Great conversation over great coffee. Talk about life, work, dreams — or just sit in comfortable silence.</p>
+            <div class="svc-meta-row">
+              <span class="svc-meta-pill">🕐 1–2 Hours</span>
+              <span class="svc-meta-pill">📍 Public Cafe</span>
+            </div>
+            <ul class="svc-includes">
+              <li>✓ Verified buddy match</li>
+              <li>✓ Your choice of cafe</li>
+              <li>✓ No awkward silences</li>
+            </ul>
+            <button class="svc-book-btn" onclick="showPage('booking')">Book Now →</button>
+          </div>
+          <div class="svc-card-new svc-popular reveal delay-3">
+            <div class="svc-popular-tag">⭐ Most Popular</div>
+            <div class="svc-card-top">
+              <div class="svc-emoji-new">🗺️</div>
+              <div class="svc-price-badge" style="background:var(--amber);color:#fff;border-color:var(--amber)">₹399<span style="color:rgba(255,255,255,.7)">/hr</span></div>
+            </div>
+            <h3>City Explorer</h3>
+            <p>New to the city or just want to explore? Your buddy knows the best local spots, markets, parks, and hidden gems.</p>
+            <div class="svc-meta-row">
+              <span class="svc-meta-pill">🕐 3–5 Hours</span>
+              <span class="svc-meta-pill">📍 Outdoor</span>
+            </div>
+            <ul class="svc-includes">
+              <li>✓ Local insider knowledge</li>
+              <li>✓ Custom route planning</li>
+              <li>✓ Food stops included</li>
+            </ul>
+            <button class="svc-book-btn svc-book-btn-dark" onclick="showPage('booking')">Book Now →</button>
+          </div>
+          <div class="svc-card-new reveal delay-4">
+            <div class="svc-card-top">
+              <div class="svc-emoji-new">💬</div>
+              <div class="svc-price-badge">₹199<span>/hr</span></div>
+            </div>
+            <h3>Talk &amp; Listen</h3>
+            <p>Sometimes you just need someone to genuinely listen — no judgment, no unsolicited advice. Just presence.</p>
+            <div class="svc-meta-row">
+              <span class="svc-meta-pill">🕐 1–3 Hours</span>
+              <span class="svc-meta-pill">📍 Public Space</span>
+            </div>
+            <ul class="svc-includes">
+              <li>✓ Non-judgmental space</li>
+              <li>✓ Compassionate buddy</li>
+              <li>✓ 100% confidential</li>
+            </ul>
+            <button class="svc-book-btn" onclick="showPage('booking')">Book Now →</button>
+          </div>
+          <div class="svc-card-new reveal delay-1">
+            <div class="svc-card-top">
+              <div class="svc-emoji-new">🛍️</div>
+              <div class="svc-price-badge">₹299<span>/hr</span></div>
+            </div>
+            <h3>Shopping Buddy</h3>
+            <p>Need a second opinion on that outfit? Your buddy helps you shop smarter and makes the whole trip fun.</p>
+            <div class="svc-meta-row">
+              <span class="svc-meta-pill">🕐 2–4 Hours</span>
+              <span class="svc-meta-pill">📍 Mall / Market</span>
+            </div>
+            <ul class="svc-includes">
+              <li>✓ Honest style feedback</li>
+              <li>✓ Budget-friendly tips</li>
+              <li>✓ No sales pressure</li>
+            </ul>
+            <button class="svc-book-btn" onclick="showPage('booking')">Book Now →</button>
+          </div>
+          <div class="svc-card-new reveal delay-2">
+            <div class="svc-card-top">
+              <div class="svc-emoji-new">📚</div>
+              <div class="svc-price-badge">₹179<span>/hr</span></div>
+            </div>
+            <h3>Study Buddy</h3>
+            <p>Study sessions are better with company. Stay focused together at a cafe or library — no distractions, just flow.</p>
+            <div class="svc-meta-row">
+              <span class="svc-meta-pill">🕐 2–4 Hours</span>
+              <span class="svc-meta-pill">📍 Cafe / Library</span>
+            </div>
+            <ul class="svc-includes">
+              <li>✓ Focus accountability</li>
+              <li>✓ Quiet, calm companion</li>
+              <li>✓ Break walks included</li>
+            </ul>
+            <button class="svc-book-btn" onclick="showPage('booking')">Book Now →</button>
+          </div>
+        </div>
+        <div class="svc-note reveal">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1l4 2v4c0 4-2.5 6.5-4 7.5C6.5 13.5 4 11 4 7V3l4-2z" fill="rgba(200,145,58,.15)" stroke="var(--amber)" stroke-width="1"/></svg>
+          All services include ID-verified buddies &amp; 100% public meetups. Prices are indicative — confirmed on booking.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CITIES WE SERVE ── NEW -->
+    <div class="cities-strip">
+      <div class="cities-label">📍 Cities We Serve</div>
+      <div class="cities-pills">
+        <span class="city-pill">🏙️ Lucknow</span>
+        <span class="city-pill">🌆 Kanpur</span>
+        <span class="city-pill">🏛️ Delhi</span>
+        <span class="city-pill">🌇 Noida</span>
+        <span class="city-pill">🏢 Agra</span>
+        <span class="city-pill">🌃 Varanasi</span>
+        <span class="city-pill coming">Prayagraj — Coming Soon</span>
+        <span class="city-pill coming">Mumbai — Coming Soon</span>
+      </div>
+    </div>
+
+    <!-- SAFETY -->
+    <section class="section safety-section">
+      <div class="container">
+        <div class="safety-layout">
+          <div class="safety-left reveal">
+            <div class="section-tag">Safety First</div>
+            <h2 class="section-title">Built Safe,<br/><em>By Design</em></h2>
+            <p class="section-sub">Every feature of City Buddy — from ID uploads to public-only meetups — was engineered around your protection.</p>
+            <div class="safety-features">
+              <div class="sf-item reveal delay-1"><div class="sf-icon">🪪</div><div><h4>ID Verified Profiles</h4><p>Both clients and buddies upload government-issued ID before any meetup is confirmed.</p></div></div>
+              <div class="sf-item reveal delay-2"><div class="sf-icon">📍</div><div><h4>Public Spaces Only</h4><p>No meetups in private spaces, vehicles, or isolated areas. Ever. Non-negotiable policy.</p></div></div>
+              <div class="sf-item reveal delay-3"><div class="sf-icon">🛑</div><div><h4>Right to Refuse</h4><p>We can cancel any booking at any time for any reason if safety standards aren't met.</p></div></div>
+              <div class="sf-item reveal delay-4"><div class="sf-icon">📞</div><div><h4>Live Support Line</h4><p>Our team is reachable during all active meetups for immediate assistance.</p></div></div>
+            </div>
+            <button class="btn-outline" onclick="showPage('safety')" style="margin-top:2rem">Read Full Safety Policy</button>
+          </div>
+          <div class="safety-right reveal delay-2">
+            <div class="safety-bigcard">
+              <div class="sbc-top">
+                <div class="sbc-num">100<span>%</span></div>
+                <p>of all meetups take place in verified public locations</p>
+              </div>
+              <div class="sbc-grid">
+                <div class="sbc-pill">🛡️ ID Verified</div>
+                <div class="sbc-pill">📍 Public Only</div>
+                <div class="sbc-pill">🔐 Encrypted Data</div>
+                <div class="sbc-pill">📞 Live Support</div>
+                <div class="sbc-pill">⚖️ Zero Tolerance</div>
+                <div class="sbc-pill">✅ Background Checked</div>
+              </div>
+              <div class="sbc-disclaimer">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l4 2v4c0 3-2 5-4 6C5 12 3 10 3 7V3l4-2z" fill="#4A7C59" opacity=".2" stroke="#4A7C59" stroke-width="1"/></svg>
+                Companionship service only. No romantic or illegal services.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section testi-section">
+      <div class="container">
+        <div class="section-header reveal" style="text-align:center">
+          <div class="section-tag">Stories</div>
+          <h2 class="section-title">What Our <em>Clients Say</em></h2>
+          <p class="section-sub" style="margin:0 auto">Real experiences from people who found genuine connection through City Buddy.</p>
+        </div>
+        <div class="testi-grid">
+          <div class="testi-card reveal delay-1">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">"I moved to Lucknow for work and knew nobody. City Buddy helped me explore the city with a genuinely friendly person. Completely safe, totally natural. I've now booked three times."</p>
+            <div class="testi-author"><div class="testi-av av-1">P</div><div><strong>Priya S.</strong><span>Lucknow · City Explorer</span></div></div>
+          </div>
+          <div class="testi-card testi-featured reveal delay-2">
+            <div class="featured-tag">Most Shared ★</div>
+            <div class="testi-stars" style="color:#fff">★★★★★</div>
+            <p class="testi-quote">"As an introvert, movies alone was my norm. Having someone to share the experience with — no awkwardness, just genuine fun. The verification process made me feel so secure."</p>
+            <div class="testi-author"><div class="testi-av av-2">R</div><div><strong>Rahul M.</strong><span style="opacity:.6">Kanpur · Movie Buddy</span></div></div>
+          </div>
+          <div class="testi-card reveal delay-3">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">"Going through a tough phase and needed someone to talk to without judgment. The Talk & Listen service was exactly that — compassionate and genuinely helpful. Highly recommended."</p>
+            <div class="testi-author"><div class="testi-av av-3">A</div><div><strong>Ananya K.</strong><span>Delhi · Talk &amp; Listen</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ SECTION ── NEW -->
+    <section class="section faq-section">
+      <div class="container">
+        <div class="section-header reveal" style="text-align:center">
+          <div class="section-tag">FAQ</div>
+          <h2 class="section-title">Got <em>Questions?</em></h2>
+          <p class="section-sub" style="margin:0 auto">Everything you need to know before booking your first City Buddy.</p>
+        </div>
+        <div class="faq-grid">
+          <div class="faq-item reveal delay-1">
+            <div class="faq-q" onclick="toggleFaq(this)">
+              Is City Buddy safe for women?
+              <span class="faq-arrow">+</span>
+            </div>
+            <div class="faq-a">Absolutely. All buddies are ID-verified before onboarding. Every meetup is in a public location only. We also offer female-only buddy matching on request. Your safety is our highest priority.</div>
+          </div>
+          <div class="faq-item reveal delay-2">
+            <div class="faq-q" onclick="toggleFaq(this)">
+              How do I pay for a session?
+              <span class="faq-arrow">+</span>
+            </div>
+            <div class="faq-a">Payment is confirmed after we match you with a buddy. We accept UPI, GPay, PhonePe, and bank transfer. You only pay after your booking is confirmed — no advance charges.</div>
+          </div>
+          <div class="faq-item reveal delay-1">
+            <div class="faq-q" onclick="toggleFaq(this)">
+              Can I choose a specific buddy?
+              <span class="faq-arrow">+</span>
+            </div>
+            <div class="faq-a">You can mention preferences in your booking form (age range, interests, communication style). We do our best to match accordingly, though specific buddy requests cannot be guaranteed.</div>
+          </div>
+          <div class="faq-item reveal delay-2">
+            <div class="faq-q" onclick="toggleFaq(this)">
+              What if I feel uncomfortable during a meetup?
+              <span class="faq-arrow">+</span>
+            </div>
+            <div class="faq-a">You can end any session at any time, no questions asked. Our support line is active during all meetups. Simply text or call us and we'll handle the rest. Your comfort always comes first.</div>
+          </div>
+          <div class="faq-item reveal delay-1">
+            <div class="faq-q" onclick="toggleFaq(this)">
+              Is this a dating or romantic service?
+              <span class="faq-arrow">+</span>
+            </div>
+            <div class="faq-a">No. City Buddy is strictly a social companionship service. Any romantic, sexual, or inappropriate behaviour leads to immediate and permanent removal from the platform. Zero tolerance — always.</div>
+          </div>
+          <div class="faq-item reveal delay-2">
+            <div class="faq-q" onclick="toggleFaq(this)">
+              How quickly is my booking confirmed?
+              <span class="faq-arrow">+</span>
+            </div>
+            <div class="faq-a">We review all bookings within 4 hours and send a match confirmation to your email. For same-day bookings, please contact us on WhatsApp directly for faster processing.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── APP DOWNLOAD BANNER ── NEW -->
+    <div class="app-banner">
+      <div class="app-banner-inner">
+        <div>
+          <h3>City Buddy App <em>Coming Soon</em></h3>
+          <p>Book a buddy in under 60 seconds. Get notified when we launch.</p>
+        </div>
+        <div class="app-btns">
+          <div class="app-btn" onclick="alert('App launching soon! Stay tuned.')">
+            <span class="abt-icon">🍎</span>
+            <div class="abt-text">
+              <small>Download on the</small>
+              <strong>App Store</strong>
+            </div>
+          </div>
+          <div class="app-btn" onclick="alert('App launching soon! Stay tuned.')">
+            <span class="abt-icon">🤖</span>
+            <div class="abt-text">
+              <small>Get it on</small>
+              <strong>Google Play</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINAL CTA -->
+    <section class="cta-final">
+      <div class="cta-mesh"><div class="cta-orb cta-orb-1"></div><div class="cta-orb cta-orb-2"></div></div>
+      <div class="container" style="position:relative;z-index:2;text-align:center">
+        <div class="section-tag" style="background:rgba(200,145,58,.15);color:#E8B96A;margin:0 auto 1.5rem">Ready to Connect?</div>
+        <h2 class="cta-title">Stop Spending<br/><em>Weekends Alone</em></h2>
+        <p class="cta-sub">Book a verified companion and start creating real memories in your city.</p>
+        <div class="cta-buttons">
+          <button class="btn-primary-hero" onclick="showPage('booking')">
+            Book Now — It's Easy
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="btn-ghost-hero" onclick="showPage('contact')">Talk to us first</button>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page-home -->
+
+
+  <!-- ===== ABOUT PAGE ===== -->
+  <div id="page-about" class="page">
+    <div class="inner-hero">
+      <div class="ih-mesh"><div class="ih-orb"></div></div>
+      <div class="container" style="position:relative;z-index:2">
+        <div class="section-tag" style="background:rgba(200,145,58,.15);color:#E8B96A;margin:0 auto 1.5rem;width:fit-content">Our Story</div>
+        <h1 class="ih-title">We Believe Nobody Should<br/><em>Feel Alone in a Crowd</em></h1>
+        <p class="ih-sub">City Buddy was built to solve a very human problem: loneliness in a city full of people.</p>
+      </div>
+    </div>
+    <section class="section">
+      <div class="container">
+        <div class="about-bento">
+          <div class="ab-card ab-who reveal"><div class="ab-tag">👋 Who We Are</div><h3>A Platform Built on Trust</h3><p>City Buddy is a companionship platform founded in Lucknow with one mission: helping people feel less alone. We're not a dating app, a therapy service, or a social media platform.</p><p>We're a bridge between people who want genuine human connection in a safe, structured, publicly-verified environment.</p></div>
+          <div class="ab-card ab-mission reveal delay-1"><div class="ab-tag">🎯 Our Mission</div><h3>Reduce Loneliness, Safely</h3><ul class="mission-ul"><li>Reduce social loneliness through safe, structured connection</li><li>Create verified, judgment-free companionship experiences</li><li>Normalize asking for company as a healthy, positive act</li><li>Operate with absolute transparency and safety at every step</li><li>Serve people from all walks of life across Indian cities</li></ul></div>
+          <div class="ab-card ab-what reveal delay-2"><div class="ab-tag">✅ What We Are</div><ul class="boundary-ul green"><li>A safe, verified social companionship service</li><li>Platform for public meetups only (cafes, cinemas, parks)</li><li>Non-judgmental space for genuine human connection</li><li>Professionally managed, fully accountable service</li></ul></div>
+          <div class="ab-card ab-not reveal delay-3"><div class="ab-tag">🚫 What We Are Not</div><ul class="boundary-ul red"><li>Not a dating or romantic service of any kind</li><li>Not a mental health or therapy platform</li><li>Not an escort or adult service — zero tolerance</li><li>Not a platform for any illegal or private activities</li></ul></div>
+          <div class="ab-card ab-disclaimer reveal delay-1"><div class="disclaimer-icon">🛡️</div><p><strong>Official Disclaimer:</strong> City Buddy is a companionship service only. No romantic, sexual, or illegal services are offered, implied, or facilitated under any circumstances whatsoever.</p></div>
+          <div class="ab-card ab-cta reveal delay-2" style="display:flex;flex-direction:column;justify-content:space-between"><div><div class="ab-tag">⭐ Ready?</div><h3>Book Your First Buddy</h3><p>Safe, verified, and genuinely fun. Try it once — you'll be back.</p></div><button class="btn-primary" style="margin-top:1.5rem;align-self:flex-start" onclick="showPage('booking')">Book Now →</button></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ===== BOOKING PAGE ===== -->
+  <div id="page-booking" class="page">
+    <div class="booking-header">
+      <div class="container" style="text-align:center;position:relative;z-index:2">
+        <div class="section-tag" style="margin:0 auto 1.2rem;width:fit-content">🔒 Secure Booking</div>
+        <h1 class="ih-title" style="color:var(--navy)">Book Your <em>City Buddy</em></h1>
+        <p class="ih-sub" style="color:var(--muted)">All information is encrypted and kept strictly confidential. Used only to match you safely.</p>
+      </div>
+    </div>
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="booking-layout">
+          <div class="booking-sidebar">
+            <div class="sidebar-card">
+              <h4>🛡️ Safe Booking Promise</h4>
+              <ul class="sidebar-ul">
+                <li>Your ID is encrypted &amp; deleted after verification</li>
+                <li>Only public meetup locations confirmed</li>
+                <li>24h support during all active meetups</li>
+                <li>Full refund if we can't match your request</li>
+              </ul>
+            </div>
+            <div class="sidebar-card sidebar-card-dark">
+              <h4>⚡ What happens next?</h4>
+              <div class="timeline">
+                <div class="tl-item"><span class="tl-dot">1</span><p>We review your booking within 4 hours</p></div>
+                <div class="tl-item"><span class="tl-dot">2</span><p>You receive a match confirmation by email</p></div>
+                <div class="tl-item"><span class="tl-dot">3</span><p>Meet your buddy at the confirmed public spot</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="booking-form-wrap">
+            <form onsubmit="event.preventDefault(); submitBooking();">
+            <div class="form-card">
+              <div class="form-section-hd"><div class="fsh-num">01</div><div><h3>Personal Information</h3><p>Your basic contact details for confirmation</p></div></div>
+              <div class="form-row-2">
+                <div class="form-group"><label>Full Name <span class="req">*</span></label><input type="text" id="b_name" placeholder="Your full name"/></div>
+                <div class="form-group"><label>Phone Number <span class="req">*</span></label><input type="tel" id="b_phone" placeholder="+91 XXXXX XXXXX"/></div>
+              </div>
+              <div class="form-group"><label>Email Address <span class="req">*</span></label><input type="email" id="b_email" placeholder="you@example.com"/></div>
+              <div class="form-section-hd"><div class="fsh-num">02</div><div><h3>Identity Verification</h3><p>Required for the safety of all parties. Documents deleted after check.</p></div></div>
+              <div class="form-row-2">
+                <div class="form-group"><label>ID Proof <span class="req">*</span></label><div class="upload-zone" onclick="document.getElementById('b_id').click()"><input type="file" id="b_id" accept="image/*,.pdf" style="display:none" onchange="handleFile('b_id','id-fn')"/><div class="uz-icon">🪪</div><div class="uz-text"><strong>Click to upload</strong><br/>Aadhaar / College ID / PAN<br/><small>PNG, JPG or PDF · Max 5MB</small></div><div class="uz-name" id="id-fn"></div></div></div>
+                <div class="form-group"><label>Recent Selfie <span class="req">*</span></label><div class="upload-zone" onclick="document.getElementById('b_photo').click()"><input type="file" id="b_photo" accept="image/*" style="display:none" onchange="handleFile('b_photo','photo-fn')"/><div class="uz-icon">🤳</div><div class="uz-text"><strong>Click to upload</strong><br/>Clear face, good lighting<br/><small>JPG or PNG only</small></div><div class="uz-name" id="photo-fn"></div></div></div>
+              </div>
+              <div class="form-section-hd"><div class="fsh-num">03</div><div><h3>Select Your Service</h3><p>Choose what kind of hangout you're looking for</p></div></div>
+              <div class="service-radio-grid">
+                <input type="radio" name="svc" id="s1" value="Movie Buddy" class="svc-radio" checked/><label for="s1" class="svc-label"><span>🎬</span> Movie Buddy</label>
+                <input type="radio" name="svc" id="s2" value="Cafe Companion" class="svc-radio"/><label for="s2" class="svc-label"><span>☕</span> Cafe Companion</label>
+                <input type="radio" name="svc" id="s3" value="City Explorer" class="svc-radio"/><label for="s3" class="svc-label"><span>🗺️</span> City Explorer</label>
+                <input type="radio" name="svc" id="s4" value="Talk & Listen" class="svc-radio"/><label for="s4" class="svc-label"><span>💬</span> Talk &amp; Listen</label>
+                <input type="radio" name="svc" id="s5" value="Shopping Buddy" class="svc-radio"/><label for="s5" class="svc-label"><span>🛍️</span> Shopping Buddy</label>
+                <input type="radio" name="svc" id="s6" value="Study Buddy" class="svc-radio"/><label for="s6" class="svc-label"><span>📚</span> Study Buddy</label>
+              </div>
+              <div class="form-section-hd"><div class="fsh-num">04</div><div><h3>Meetup Details</h3><p>When and where would you like to meet?</p></div></div>
+              <div class="form-row-2">
+                <div class="form-group"><label>Preferred Date <span class="req">*</span></label><input type="date" id="b_date"/></div>
+                <div class="form-group"><label>Preferred Time <span class="req">*</span></label><input type="time" id="b_time"/></div>
+              </div>
+              <div class="form-group"><label>City / Area <span class="req">*</span></label><input type="text" id="b_location" placeholder="e.g. Hazratganj, Lucknow"/></div>
+              <div class="form-group">
+                <label>What are you expecting from this meet? <span class="req">*</span></label>
+                <textarea id="b_expect" placeholder="Tell us about the vibe..."></textarea>
+              </div>
+
+              <div class="agreement-block">
+                <label class="agree-row">
+                  <input type="checkbox" id="b_agree" class="agree-check"/>
+                  <span class="agree-custom"></span>
+                  <span class="agree-text">I confirm I am 18+ years old and agree to the 
+                  <a href="#" onclick="showPage('safety')">Safety Rules &amp; Public Meeting Policy</a>. 
+                  I understand this is a companionship service only and will meet exclusively at public places. 
+                  I have read and accept the <a href="#" onclick="showPage('safety')">Terms &amp; Conditions</a>.</span>
+                </label>
+              </div>
+
+              <button type="button" class="form-submit" id="submitBtn" onclick="submitBooking()">
+                <span id="submit-text">Submit Booking Request</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <div class="form-success" id="booking-success">
+                <div class="success-icon">✅</div>
+                <h4>Booking Submitted!</h4>
+                <p>Thank you! We'll contact you within 24 hours to confirm your buddy match.</p>
+              </div>
+
+              <p class="form-note">🔒 ID is used only for verification and deleted within 24 hours.</p>
+
+            </div><!-- closes form-card -->
+            </form>
+            </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== SAFETY PAGE ===== -->
+  <div id="page-safety" class="page">
+    <div class="inner-hero inner-hero-dark">
+      <div class="container" style="position:relative;z-index:2;text-align:center">
+        <div class="section-tag" style="background:rgba(200,145,58,.15);color:#E8B96A;margin:0 auto 1.5rem;width:fit-content">Legal &amp; Safety</div>
+        <h1 class="ih-title" style="color:#fff">Safety, Terms<br/><em>&amp; Legal</em></h1>
+        <p class="ih-sub" style="color:rgba(255,255,255,.6)">We operate with full transparency. Read our policies, rules, and disclaimer.</p>
+      </div>
+    </div>
+    <section class="section">
+      <div class="container">
+        <div class="legal-tabs-wrap">
+          <div class="legal-tab-nav">
+            <button class="ltab active" onclick="switchTab('terms',this)">Terms &amp; Conditions</button>
+            <button class="ltab" onclick="switchTab('privacy',this)">Privacy Policy</button>
+            <button class="ltab" onclick="switchTab('rules',this)">Strict Rules</button>
+            <button class="ltab" onclick="switchTab('disclaimer',this)">Disclaimer</button>
+          </div>
+          <div class="legal-panel active" id="lt-terms">
+            <div class="lp-card"><h3>📄 Terms &amp; Conditions</h3><p><em>Last updated: January 2025</em></p><p>By using City Buddy's services, you agree to these terms in full.</p></div>
+            <div class="lp-card"><h3>1. Eligibility</h3><p>You must be at least 18 years of age to use City Buddy. By submitting a booking, you confirm this requirement. We reserve the right to verify your age at any time.</p></div>
+            <div class="lp-card"><h3>2. Nature of Service</h3><p>City Buddy provides social companionship services only — visiting cafes, watching movies, exploring the city, and light conversation. No romantic, sexual, therapeutic, medical, or illegal activities.</p><div class="lp-highlight">⚠️ Any misrepresentation of intent results in immediate and permanent removal from the platform.</div></div>
+            <div class="lp-card"><h3>3. Booking &amp; Cancellation</h3><p>Bookings are confirmed only after our team reviews and approves your request. We reserve the right to decline any booking. Cancellations under 24 hours may incur a fee.</p></div>
+            <div class="lp-card"><h3>4. User Conduct</h3><ul class="lp-ul"><li>Treat all City Buddy companions with full respect and dignity</li><li>Meet only at the agreed public location and time</li><li>Do not request services outside the scope of what was booked</li><li>Threatening or inappropriate behaviour will be reported to authorities</li></ul></div>
+            <div class="lp-card"><h3>5. Limitation of Liability</h3><p>City Buddy acts as a facilitation platform. While we take extensive precautions, we are not liable for personal disputes or accidents arising from meetups. Users meet at their own informed consent.</p></div>
+            <div class="lp-card">
+              <h3>💳 Payment & Refund Policy</h3>
+               <p><strong>Payment:</strong> Payment is confirmed only after booking approval.</p>
+              <p><strong>Cancellation:</strong> Free cancellation up to 12 hours before the session.</p>
+              <p><strong>Late Cancellation:</strong> Within 12 hours may incur partial charges.</p>
+              <p><strong>Refund:</strong> Full refund if we are unable to match your request or cancel due to safety concerns.</p>
+            </div>
+          </div>
+          <div class="legal-panel" id="lt-privacy">
+            <div class="lp-card"><h3>🔒 Privacy Policy</h3><p><em>Last updated: January 2025</em></p><p>City Buddy is committed to protecting your personal information.</p></div>
+            <div class="lp-card"><h3>Data We Collect</h3><ul class="lp-ul"><li>Full name, phone number, and email address</li><li>Government ID document (for verification only)</li><li>A recent photo for visual identity confirmation</li><li>Meetup preferences and location information</li></ul></div>
+            <div class="lp-card"><h3>How We Use Your Data</h3><ul class="lp-ul"><li>To verify identity and ensure safety for all parties</li><li>To match you with an appropriate companion</li><li>To communicate booking confirmations and updates</li></ul><div class="lp-highlight" style="background:rgba(74,124,89,.08);border-color:rgba(74,124,89,.3)">🔐 We never sell, rent, or share your personal data. Your ID documents are deleted after verification.</div></div>
+            <div class="lp-card"><h3>Your Rights</h3><ul class="lp-ul"><li>Right to access the data we hold about you</li><li>Right to request correction of inaccurate data</li><li>Right to deletion of your personal data</li><li>Right to withdraw consent at any time</li></ul></div>
+          </div>
+          <div class="legal-panel" id="lt-rules">
+            <div class="lp-card"><h3>📏 Strict Rules of Conduct</h3><p>These rules apply to ALL users. Violation results in immediate removal and possible legal action.</p></div>
+            <div class="rules-list">
+              <div class="rule-item"><span class="rule-icon">📍</span><div><strong>Public Locations Only</strong><p>All meetups must be in pre-agreed, fully public locations. No private premises, vehicles, or isolated areas.</p></div></div>
+              <div class="rule-item"><span class="rule-icon">🚫</span><div><strong>No Romantic Behaviour</strong><p>No romantic, sexual, or intimate behaviour of any kind.</p></div></div>
+              <div class="rule-item"><span class="rule-icon">⚖️</span><div><strong>No Illegal Activities</strong><p>No illegal activities, substances, or requests of any nature during or related to a meetup.</p></div></div>
+              <div class="rule-item"><span class="rule-icon">🤝</span><div><strong>Mutual Respect Required</strong><p>Both parties must treat each other with full respect. Harassment or pressure is grounds for immediate ban.</p></div></div>
+              <div class="rule-item"><span class="rule-icon">🛑</span><div><strong>Right to Refuse</strong><p>City Buddy can refuse, cancel, or terminate any service at any time, for any reason, without notice.</p></div></div>
+              <div class="rule-item"><span class="rule-icon">🔞</span><div><strong>18+ Only</strong><p>Users must be 18+. Using a minor's identity is a criminal offence and will be reported to authorities.</p></div></div>
+            </div>
+          </div>
+          <div class="legal-panel" id="lt-disclaimer">
+            <div class="lp-card"><div class="lp-highlight" style="font-size:1rem;padding:1.5rem">⚠️ <strong>City Buddy is a social companionship service only.</strong> This platform does not offer, facilitate, imply, or condone any romantic, sexual, escort, or illegal services under any circumstances whatsoever.</div></div>
+            <div class="lp-card"><h3>Scope of Service</h3><ul class="lp-ul"><li>This is a paid social companionship platform designed to reduce loneliness</li><li>Companions are verified civilians — not therapists or entertainers</li><li>City Buddy is not responsible for personal decisions made before, during, or after a meetup</li></ul></div>
+            <div class="lp-card"><h3>Not a Substitute For</h3><ul class="lp-ul"><li>Professional mental health or therapy services</li><li>Medical advice or health consultations</li><li>Legal counsel or emergency services</li></ul><div class="lp-highlight" style="margin-top:1rem">🆘 If you are in crisis, please contact iCall: <strong>9152987821</strong> or Vandrevala Foundation: <strong>1860-2662-345</strong> (24/7)</div></div>
+            <div class="lp-card"><h3>Governing Law</h3><p>This service operates under the laws of the Republic of India. Disputes subject to jurisdiction of courts in Lucknow, Uttar Pradesh.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ===== CONTACT PAGE ===== -->
+  <div id="page-contact" class="page">
+    <div class="booking-header">
+      <div class="container" style="text-align:center;position:relative;z-index:2">
+        <div class="section-tag" style="margin:0 auto 1.2rem;width:fit-content">Get in Touch</div>
+        <h1 class="ih-title" style="color:var(--navy)">We'd Love to<br/><em>Hear From You</em></h1>
+        <p class="ih-sub" style="color:var(--muted)">Questions before booking? Feedback? Our team responds within 24 hours.</p>
+      </div>
+    </div>
+    <section class="section" style="padding-top:2rem">
+      <div class="container">
+        <div class="contact-layout">
+          <div class="contact-info-col">
+            <div class="ci-card reveal"><div class="ci-icon">📧</div><h4>Email Us</h4><p>General enquiries &amp; bookings</p><a href="mailto:midnightgents175@gmail.com" class="ci-link">midnightgents175@gmail.com</a></div>
+            <div class="ci-card reveal delay-1"><div class="ci-icon">💬</div><h4>WhatsApp Chat</h4><p>Quick questions? We're usually online within 2–4 hours.</p><a href="https://wa.me/919999999999?text=Hi%20City%20Buddy%2C%20I%20have%20a%20question." target="_blank" class="wa-btn">💬 Open WhatsApp</a></div>
+            <div class="ci-card reveal delay-2"><div class="ci-icon">📍</div><h4>Based In</h4><p>Lucknow, Uttar Pradesh, India</p><span class="ci-tag">Serving Lucknow · Kanpur · Delhi</span></div>
+            <div class="ci-card reveal delay-3"><div class="ci-icon">🕐</div><h4>Response Time</h4><p>Within <strong>24 hours</strong> on business days. WhatsApp: 2–4 hours typically.</p></div>
+            <div class="ci-card reveal">
+              <div class="ci-icon">🏢</div>
+              <h4>Business Information</h4>
+              <p><strong>Service:</strong> City Buddy</p>
+              <p><strong>Type:</strong> Social Companionship Service</p>
+              <p><strong>Location:</strong> Lucknow, Uttar Pradesh, India</p>
+              <p><strong>Email:</strong> hello@citybuddy.in</p>
+            </div>
+          </div>
+          <div class="form-card reveal delay-2">
+            <h3 class="fc-title">Send a Message</h3>
+            <div class="form-group"><label>Your Name</label><input type="text" id="c_name" placeholder="Full name"/></div>
+            <div class="form-group"><label>Email Address</label><input type="email" id="c_email" placeholder="you@example.com"/></div>
+            <div class="form-group"><label>Subject</label><select id="c_subject"><option value="">— Select a subject —</option><option>General Enquiry</option><option>Booking Question</option><option>Safety Concern</option><option>Feedback / Review</option><option>Partnership</option><option>Other</option></select></div>
+            <div class="form-group"><label>Message</label><textarea id="c_message" placeholder="Write your message here..." style="min-height:140px"></textarea></div>
+            <button class="form-submit" onclick="submitContact()"><span id="c-submit-text">Send Message</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="form-success" id="contact-success"><div class="success-icon">✅</div><h4>Message Sent!</h4><p>Thank you for reaching out. We'll get back to you within 24 hours.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="cblogo.png" alt="City Buddy" class="footer-logo-img"/>
+          <p>Safe, verified companionship for movies, cafes &amp; city hangouts. Reducing loneliness — one meetup at a time.</p>
+          <div class="footer-badges">
+            <span>✓ Verified Users</span>
+            <span>✓ 100% Public</span>
+            <span>✓ Safe &amp; Trusted</span>
+          </div>
+        </div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h5>Navigate</h5>
+            <a href="#" onclick="showPage('home')">Home</a>
+            <a href="#" onclick="showPage('about')">About Us</a>
+            <a href="#" onclick="showPage('booking')">Book a Buddy</a>
+            <a href="#" onclick="showPage('contact')">Contact</a>
+          </div>
+          <div class="footer-col">
+            <h5>Services</h5>
+            <a href="#">🎬 Movie Buddy — ₹299/hr</a>
+            <a href="#">☕ Cafe Companion — ₹249/hr</a>
+            <a href="#">🗺️ City Explorer — ₹399/hr</a>
+            <a href="#">💬 Talk &amp; Listen — ₹199/hr</a>
+            <a href="#">🛍️ Shopping Buddy — ₹299/hr</a>
+            <a href="#">📚 Study Buddy — ₹179/hr</a>
+          </div>
+          <div class="footer-col">
+            <h5>Legal</h5>
+            <a href="#" onclick="showPage('safety')">Terms &amp; Conditions</a>
+            <a href="#" onclick="showPage('safety')">Privacy Policy</a>
+            <a href="#" onclick="showPage('safety')">Safety Rules</a>
+            <a href="#" onclick="showPage('safety')">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 City Buddy. All rights reserved. This is a companionship service only.</span>
+        <span>Made with ♥ in Lucknow, India</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
