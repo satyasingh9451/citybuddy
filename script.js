@@ -198,15 +198,24 @@ async function submitBooking() {
 
   try {
     if (USE_PYTHON_BACKEND) {
-      // Python Flask backend
       const res = await fetch("/api/booking", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(params)
       });
+
       const result = await res.json();
-      if (result.success) { onBookingSuccess(); }
-      else { alert("❌ Error: " + result.error); btn.disabled = false; if (btnText) btnText.textContent = "Submit Booking Request"; }
+
+      if (res.ok) {
+        alert("Booking successful ✅");
+        onBookingSuccess();
+      } else {
+        alert("Error: " + (result.error || "Something went wrong"));
+        btn.disabled = false;
+        if (btnText) btnText.textContent = "Submit Booking Request";
+      }
     } else {
       // EmailJS (for Netlify)
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_BOOKING_TID, params);
