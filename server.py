@@ -69,15 +69,21 @@ def save_booking(data):
 # EMAIL
 
 def send_email(to_email, subject, body):
-    msg = MIMEText(body)
-    msg["Subject"] = subject
-    msg["From"] = EMAIL
-    msg["To"] = to_email
+    try:
+        msg = MIMEText(body)
+        msg["Subject"] = subject
+        msg["From"] = EMAIL
+        msg["To"] = to_email
 
-    with smtplib.SMTP("smtp.gmail.com", 587) as server:
-        server.starttls()
-        server.login(EMAIL, PASSWORD)
-        server.send_message(msg)
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(EMAIL, PASSWORD)
+            server.send_message(msg)
+
+        print("Email sent successfully")
+
+    except Exception as e:
+        print("EMAIL ERROR:", e)
 # API
 @app.route("/api/booking", methods=["POST"])
 def booking():
@@ -98,12 +104,12 @@ Time: {data.get('meetup_time')}
 Location: {data.get('meetup_location')}
 Notes: {data.get('expectations')}
 """
-            send_email(RECEIVER_EMAIL, f"New Booking - {data.get('client_name')}", booking_body)
+            send_email(RECEIVER_EMAIL, "New Booking", booking_body)
 
         return jsonify({"status": "success"})
 
     except Exception as e:
-        print("ERROR:", e)
+        print("BOOKING ERROR:", e)
         return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route("/api/contact", methods=["POST"])
