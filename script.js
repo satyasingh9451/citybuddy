@@ -10,11 +10,20 @@ const USE_PYTHON_BACKEND = true; // ← change to false for Netlify
 // EmailJS keys (only needed if USE_PYTHON_BACKEND = false)
 const EMAILJS_PUBLIC_KEY  = "xNKhEqAK7TW0nMZx2";
 const EMAILJS_SERVICE_ID  = "service_81vbg6h";
-const EMAILJS_BOOKING_TID = "template_0zzr3o2";
+const EMAILJS_BOOKING_TID = "template_i5b6zdj";
 const EMAILJS_CONTACT_TID = "template_i5b6zdj";
 
 if (!USE_PYTHON_BACKEND) {
   emailjs.init(EMAILJS_PUBLIC_KEY);
+}
+
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 }
 
 // ── PAGE NAVIGATION ───────────────────────────────────────────
@@ -31,7 +40,7 @@ function showPage(name) {
   setTimeout(initReveal, 150);
 
   if (name === "booking") {
-    const dateEl = document.getElementById("b_date");
+    const dateEl = document.getElementById("date");
     if (dateEl) dateEl.min = new Date().toISOString().split("T")[0];
   }
 }
@@ -164,77 +173,56 @@ function showError(id) {
 
 // ── BOOKING SUBMISSION ────────────────────────────────────────
 async function submitBooking() {
-  const name     = (document.getElementById("b_name")?.value || "").trim();
-  const email    = (document.getElementById("b_email")?.value || "").trim();
-  const phone    = (document.getElementById("b_phone")?.value || "").trim();
-  const date     = document.getElementById("b_date")?.value || "";
-  const time     = document.getElementById("b_time")?.value || "";
-  const location = (document.getElementById("b_location")?.value || "").trim();
-  const expect   = (document.getElementById("b_expect")?.value || "").trim();
-  const agreed   = document.getElementById("b_agree")?.checked || false;
-  const service  = getSelectedService();
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const service = getSelectedService();
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+  const location = document.getElementById("location").value;
+  const notes = document.getElementById("notes").value;
 
-  if (!name)               { alert("Please enter your full name.");       showError("b_name");        return; }
-  if (!validateEmail(email)){ alert("Please enter a valid email.");        showError("b_email");       return; }
-  if (!validatePhone(phone)){ alert("Enter a valid 10-digit mobile no."); showError("b_phone");       return; }
-  if (!date)               { alert("Please select a date.");              showError("b_date");        return; }
-  if (!time)               { alert("Please select a time.");              showError("b_time");        return; }
-  if (!location)           { alert("Please enter your city/area.");       showError("b_location");    return; }
-  if (!expect)             { alert("Please share your expectations.");    showError("b_expect");      return; }
-  if (!agreed)             { alert("Please agree to the Safety Rules.");                              return; }
+  const file1 = document.getElementById("photo1").files[0];
+  const file2 = document.getElementById("photo2").files[0];
 
-  const btn = document.getElementById("submitBtn");
-  const btnText = document.getElementById("submit-text");
-  btn.disabled = true;
-  if (btnText) btnText.textContent = "Submitting...";
-
-  const params = {
-    client_name: name, client_email: email, client_phone: phone,
-    service_type: service, meetup_date: date, meetup_time: time,
-    meetup_location: location, expectations: expect,
-    agreed_to_terms: "Yes",
-    submitted_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
-  };
+  if (!file1 || !file2) {
+    alert("Please upload both photos");
+    return;
+  }
 
   try {
-    if (USE_PYTHON_BACKEND) {
-      const res = await fetch("/api/booking", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(params)
-      });
+    const img1 = await toBase64(file1);
+    const img2 = await toBase64(file2);
 
-      const result = await res.json();
+    const params = {
+      client_name: name,
+      client_email: email,
+      client_phone: phone,
+      service_type: service,
+      meetup_date: date,
+      meetup_time: time,
+      meetup_location: location,
+      expectations: notes,
+      photo1: img1,
+      photo2: img2
+    };
 
-      if (res.ok) {
-        alert("Booking successful ✅");
-        onBookingSuccess();
-      } else {
-        alert("Error: " + (result.error || "Something went wrong"));
-        btn.disabled = false;
-        if (btnText) btnText.textContent = "Submit Booking Request";
-      }
-    } else {
-      // EmailJS (for Netlify)
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_BOOKING_TID, params);
-      onBookingSuccess();
-    }
-  } catch (err) {
-    console.error(err);
-    if (USE_PYTHON_BACKEND) {
-      alert("❌ Cannot connect to server. Make sure Python server is running:\npython server.py");
-    } else {
-      onBookingSuccess(); // demo fallback
-    }
-    btn.disabled = false;
-    if (btnText) btnText.textContent = "Submit Booking Request";
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_BOOKING_TID, params);
+
+    alert("Booking submitted successfully ✅");
+
+    // Optional: reset form values after successful submit
+    const form = document.querySelector("#page-booking form");
+    if (form) form.reset();
+
+  } catch (error) {
+    console.error(error);
+    alert("Failed to send booking ❌");
   }
 }
 
 function onBookingSuccess() {
-  ["b_name","b_email","b_phone","b_date","b_time","b_location","b_expect"].forEach(id => {
+  ["name","email","phone","date","time","location","notes"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = "";
   });
@@ -243,6 +231,10 @@ function onBookingSuccess() {
   ["id-fn","photo-fn"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.textContent = "";
+  });
+  ["photo1","photo2"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
   });
   const firstRadio = document.querySelector('input[name="svc"]');
   if (firstRadio) firstRadio.checked = true;
@@ -330,6 +322,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal();
   initCookieBanner();
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
-  const dateEl = document.getElementById("b_date");
+  const dateEl = document.getElementById("date");
   if (dateEl) dateEl.min = new Date().toISOString().split("T")[0];
 });

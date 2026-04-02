@@ -9,7 +9,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("xNKhEqAK7TW0nMZx2");
+    })();
+  </script>
 </head>
 <body>
 
@@ -411,11 +416,11 @@
       <div class="cities-label">📍 Cities We Serve</div>
       <div class="cities-pills">
         <span class="city-pill">🏙️ Lucknow</span>
-        <span class="city-pill">🌆 Kanpur</span>
-        <span class="city-pill">🏛️ Delhi</span>
-        <span class="city-pill">🌇 Noida</span>
-        <span class="city-pill">🏢 Agra</span>
-        <span class="city-pill">🌃 Varanasi</span>
+        <span class="city-pill coming">🌆 Kanpur Coming Soon</span>
+        <span class="city-pill coming">🏛️ Delhi Coming Soon</span>
+        <span class="city-pill coming">🌇 Noida Coming Soon</span>
+        <span class="city-pill coming">🏢 Agra Coming Soon</span>
+        <span class="city-pill coming">🌃 Varanasi Coming Soon</span>
         <span class="city-pill coming">Prayagraj — Coming Soon</span>
         <span class="city-pill coming">Mumbai — Coming Soon</span>
       </div>
@@ -652,14 +657,16 @@
             <div class="form-card">
               <div class="form-section-hd"><div class="fsh-num">01</div><div><h3>Personal Information</h3><p>Your basic contact details for confirmation</p></div></div>
               <div class="form-row-2">
-                <div class="form-group"><label>Full Name <span class="req">*</span></label><input type="text" id="b_name" placeholder="Your full name"/></div>
-                <div class="form-group"><label>Phone Number <span class="req">*</span></label><input type="tel" id="b_phone" placeholder="+91 XXXXX XXXXX"/></div>
+                <div class="form-group"><label>Full Name <span class="req">*</span></label><input type="text" id="name" placeholder="Your full name" required/></div>
+                <div class="form-group"><label>Phone Number <span class="req">*</span></label><input type="tel" id="phone" placeholder="+91 XXXXX XXXXX" required/></div>
               </div>
-              <div class="form-group"><label>Email Address <span class="req">*</span></label><input type="email" id="b_email" placeholder="you@example.com"/></div>
+              <div class="form-group"><label>Email Address <span class="req">*</span></label><input type="email" id="email" placeholder="you@example.com" required/></div>
               <div class="form-section-hd"><div class="fsh-num">02</div><div><h3>Identity Verification</h3><p>Required for the safety of all parties. Documents deleted after check.</p></div></div>
               <div class="form-row-2">
                 <div class="form-group"><label>ID Proof <span class="req">*</span></label><div class="upload-zone" onclick="document.getElementById('b_id').click()"><input type="file" id="b_id" accept="image/*,.pdf" style="display:none" onchange="handleFile('b_id','id-fn')"/><div class="uz-icon">🪪</div><div class="uz-text"><strong>Click to upload</strong><br/>Aadhaar / College ID / PAN<br/><small>PNG, JPG or PDF · Max 5MB</small></div><div class="uz-name" id="id-fn"></div></div></div>
                 <div class="form-group"><label>Recent Selfie <span class="req">*</span></label><div class="upload-zone" onclick="document.getElementById('b_photo').click()"><input type="file" id="b_photo" accept="image/*" style="display:none" onchange="handleFile('b_photo','photo-fn')"/><div class="uz-icon">🤳</div><div class="uz-text"><strong>Click to upload</strong><br/>Clear face, good lighting<br/><small>JPG or PNG only</small></div><div class="uz-name" id="photo-fn"></div></div></div>
+                <div class="form-group"><label>Photo 1 <span class="req">*</span></label><input type="file" id="photo1" accept="image/*" required></div>
+                <div class="form-group"><label>Photo 2 <span class="req">*</span></label><input type="file" id="photo2" accept="image/*" required></div>
               </div>
               <div class="form-section-hd"><div class="fsh-num">03</div><div><h3>Select Your Service</h3><p>Choose what kind of hangout you're looking for</p></div></div>
               <div class="service-radio-grid">
@@ -672,13 +679,13 @@
               </div>
               <div class="form-section-hd"><div class="fsh-num">04</div><div><h3>Meetup Details</h3><p>When and where would you like to meet?</p></div></div>
               <div class="form-row-2">
-                <div class="form-group"><label>Preferred Date <span class="req">*</span></label><input type="date" id="b_date"/></div>
-                <div class="form-group"><label>Preferred Time <span class="req">*</span></label><input type="time" id="b_time"/></div>
+                <div class="form-group"><label>Preferred Date <span class="req">*</span></label><input type="date" id="date" required/></div>
+                <div class="form-group"><label>Preferred Time <span class="req">*</span></label><input type="time" id="time" required/></div>
               </div>
-              <div class="form-group"><label>City / Area <span class="req">*</span></label><input type="text" id="b_location" placeholder="e.g. Hazratganj, Lucknow"/></div>
+              <div class="form-group"><label>City / Area <span class="req">*</span></label><input type="text" id="location" placeholder="e.g. Hazratganj, Lucknow" required/></div>
               <div class="form-group">
                 <label>What are you expecting from this meet? <span class="req">*</span></label>
-                <textarea id="b_expect" placeholder="Tell us about the vibe..."></textarea>
+                <textarea id="notes" placeholder="Tell us about the vibe..." required></textarea>
               </div>
 
               <div class="agreement-block">
