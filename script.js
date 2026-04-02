@@ -217,8 +217,35 @@ async function submitBooking() {
   }
 
   try {
-    const base64Image1 = file1 ? await toBase64(file1) : "";
-    const base64Image2 = file2 ? await toBase64(file2) : "";
+    // Upload photo1 to Cloudinary
+    const fileA = document.getElementById("photo1").files[0];
+    const formDataA = new FormData();
+    formDataA.append("file", fileA);
+    formDataA.append("upload_preset", "CITYBUDDY_UPLOAD");
+
+    const resA = await fetch("https://api.cloudinary.com/v1_1/dn2egiwcn/image/upload", {
+      method: "POST",
+      body: formDataA
+    });
+
+    const dataA = await resA.json();
+    console.log(dataA);
+    const imageUrl1 = dataA.secure_url;
+
+    // Upload photo2 to Cloudinary
+    const fileB = document.getElementById("photo2").files[0];
+    const formDataB = new FormData();
+    formDataB.append("file", fileB);
+    formDataB.append("upload_preset", "CITYBUDDY_UPLOAD");
+
+    const resB = await fetch("https://api.cloudinary.com/v1_1/dn2egiwcn/image/upload", {
+      method: "POST",
+      body: formDataB
+    });
+
+    const dataB = await resB.json();
+    console.log(dataB);
+    const imageUrl2 = dataB.secure_url;
 
     const params = {
       client_name: name,
@@ -229,8 +256,8 @@ async function submitBooking() {
       meetup_time: time,
       meetup_location: location,
       expectations: notes,
-      photo1: base64Image1,
-      photo2: base64Image2
+      photo1: imageUrl1,
+      photo2: imageUrl2
     };
 
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_BOOKING_TID, params);
