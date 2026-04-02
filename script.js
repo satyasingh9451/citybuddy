@@ -26,6 +26,33 @@ function toBase64(file) {
   });
 }
 
+function compressImage(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const MAX_WIDTH = 400;
+        const scale = MAX_WIDTH / img.width;
+
+        canvas.width = MAX_WIDTH;
+        canvas.height = img.height * scale;
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        resolve(canvas.toDataURL("image/jpeg", 0.5));
+      };
+    };
+  });
+}
+
 // ── PAGE NAVIGATION ───────────────────────────────────────────
 function showPage(name) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
@@ -191,8 +218,8 @@ async function submitBooking() {
   }
 
   try {
-    const img1 = await toBase64(file1);
-    const img2 = await toBase64(file2);
+    const img1 = await compressImage(file1);
+    const img2 = await compressImage(file2);
 
     const params = {
       client_name: name,
