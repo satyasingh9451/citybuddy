@@ -3,11 +3,10 @@
 // ================================================================
 
 // ── CHOOSE YOUR MODE ──────────────────────────────────────────
-// If using Python backend → set USE_PYTHON_BACKEND = true
-// If using EmailJS (Netlify) → set USE_PYTHON_BACKEND = false
-const USE_PYTHON_BACKEND = true; // ← change to false for Netlify
+// EMAILJS ONLY MODE
+const USE_PYTHON_BACKEND = false;
 
-// EmailJS keys (only needed if USE_PYTHON_BACKEND = false)
+// EmailJS keys
 const EMAILJS_PUBLIC_KEY  = "xNKhEqAK7TW0nMZx2";
 const EMAILJS_SERVICE_ID  = "service_81vbg6h";
 const EMAILJS_BOOKING_TID = "template_i5b6zdj";
@@ -218,8 +217,8 @@ async function submitBooking() {
   }
 
   try {
-    const img1 = await compressImage(file1);
-    const img2 = await compressImage(file2);
+    const base64Image1 = file1 ? await toBase64(file1) : "";
+    const base64Image2 = file2 ? await toBase64(file2) : "";
 
     const params = {
       client_name: name,
@@ -230,8 +229,8 @@ async function submitBooking() {
       meetup_time: time,
       meetup_location: location,
       expectations: notes,
-      photo1: img1,
-      photo2: img2
+      photo1: base64Image1,
+      photo2: base64Image2
     };
 
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_BOOKING_TID, params);
